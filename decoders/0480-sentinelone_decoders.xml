@@ -1,0 +1,899 @@
+<!--
+  SentinelOne CEF2 syslog decoders for Wazuh.
+
+  Install on the Wazuh manager as:
+    /var/ossec/etc/decoders/0480-sentinelone_decoders.xml
+
+  The SentinelOne examples are wrapped across lines in the source document, but
+  syslog ingestion should send each CEF event as one log message.
+-->
+
+<decoder name="sentinelone">
+  <prematch type="pcre2">CEF:2\|SentinelOne\|Mgmt\|</prematch>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">CEF:2\|SentinelOne\|([^|]*)\|</regex>
+  <order>sentinelone.cef_product</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">CEF:2\|SentinelOne\|Mgmt\|([^|=]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
+  <order>sentinelone.os</order>
+</decoder>
+
+<!-- Core SentinelOne activity identifiers. activityType replaces eventID in newer platforms. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)eventID=([^|]*)</regex>
+  <order>id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)eventID=([^|]*)</regex>
+  <order>sentinelone.event_id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)activityType=([^|]*)</regex>
+  <order>id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)activityType=([^|]*)</regex>
+  <order>sentinelone.activity_type</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)activityID=([^|]*)</regex>
+  <order>sentinelone.activity_id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)eventDesc=([^|]*)</regex>
+  <order>sentinelone.event_desc</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)eventSeverity=([^|]*)</regex>
+  <order>sentinelone.event_severity</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)cat=([^|]*)</regex>
+  <order>sentinelone.category</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)rt=([^|]*)</regex>
+  <order>sentinelone.report_time</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)vendor=([^|]*)</regex>
+  <order>sentinelone.vendor</order>
+</decoder>
+
+<!-- Tenant, scope, and management-console context. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)accountId=([^|]*)</regex>
+  <order>sentinelone.account.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)accountName=([^|]*)</regex>
+  <order>sentinelone.account.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)siteId=([^|]*)</regex>
+  <order>sentinelone.site.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)siteID=([^|]*)</regex>
+  <order>sentinelone.site.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)siteName=([^|]*)</regex>
+  <order>sentinelone.site.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)notificationScope=([^|]*)</regex>
+  <order>sentinelone.notification_scope</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceAddress=\s*([^|]*)</regex>
+  <order>sentinelone.device.address</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceHostFqdn=([^|]*)</regex>
+  <order>sentinelone.device.fqdn</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceHostName=([^|]*)</regex>
+  <order>sentinelone.device.hostname</order>
+</decoder>
+
+<!-- User and originator fields. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)suser=([^|]*)</regex>
+  <order>srcuser</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)suser=([^|]*)</regex>
+  <order>sentinelone.user.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceUserName=([^|]*)</regex>
+  <order>user</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceUserName=([^|]*)</regex>
+  <order>sentinelone.source.user.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceUserId=([^|]*)</regex>
+  <order>sentinelone.source.user.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceUserSid=([^|]*)</regex>
+  <order>sentinelone.source.user.sid</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)originatorName=([^|]*)</regex>
+  <order>sentinelone.originator.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)originatorVersion=([^|]*)</regex>
+  <order>sentinelone.originator.version</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)originatorUserSid=([^|]*)</regex>
+  <order>sentinelone.originator.user_sid</order>
+</decoder>
+
+<!-- Endpoint identity and state. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)ip=\s*([^|]*)</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)ip=\s*([^|]*)</regex>
+  <order>sentinelone.source.ip</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceMgmtPrecievedAddress=\s*([^|]*)</regex>
+  <order>sentinelone.source.management_address</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceAddress(?:\d+)?=\s*([^|]*)</regex>
+  <order>sentinelone.source.address</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceIpAddresses=([^|]*)</regex>
+  <order>sentinelone.source.ip_addresses</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceMacAddress(?:\d+)?=([^|]*)</regex>
+  <order>sentinelone.source.mac_address</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceMacAddresses=([^|]*)</regex>
+  <order>sentinelone.source.mac_addresses</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceHostName=\s*([^|]*)</regex>
+  <order>system_name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceHostName=\s*([^|]*)</regex>
+  <order>sentinelone.source.hostname</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceFqdn=\s*([^|]*)</regex>
+  <order>sentinelone.source.fqdn</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceDnsDomain=([^|]*)</regex>
+  <order>sentinelone.source.dns_domain</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceHostSid=([^|]*)</regex>
+  <order>sentinelone.source.host_sid</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceAgentId=([^|]*)</regex>
+  <order>sentinelone.source.agent.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceAgentUuid=([^|]*)</regex>
+  <order>sentinelone.source.agent.uuid</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceAgentUUID=([^|]*)</regex>
+  <order>sentinelone.source.agent.uuid</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceAgentLastActivityTimestamp=([^|]*)</regex>
+  <order>sentinelone.source.agent.last_activity</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceAgentLastAcivityTimestmps=([^|]*)</regex>
+  <order>sentinelone.source.agent.last_activity</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceAgentRegisterTimestamp=([^|]*)</regex>
+  <order>sentinelone.source.agent.registered</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceAgentRegisterTimestmps=([^|]*)</regex>
+  <order>sentinelone.source.agent.registered</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceNetworkState=([^|]*)</regex>
+  <order>sentinelone.source.network_state</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceNetInterfaceName=([^|]*)</regex>
+  <order>sentinelone.source.network_interface_name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceOsType=([^|]*)</regex>
+  <order>sentinelone.source.os.type</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceOsRevision=([^|]*)</regex>
+  <order>sentinelone.source.os.revision</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceThreatCount=([^|]*)</regex>
+  <order>sentinelone.source.threat_count</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceGroupId=([^|]*)</regex>
+  <order>sentinelone.source.group.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)sourceGroupName=([^|]*)</regex>
+  <order>sentinelone.source.group.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)duid=([^|]*)</regex>
+  <order>sentinelone.source.device_uid</order>
+</decoder>
+
+<!-- Threat and file fields. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)fileHash=([^|]*)</regex>
+  <order>sentinelone.file.hash</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)fileHashSha256=([^|]*)</regex>
+  <order>sentinelone.file.hash_sha256</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)fileHashMd5=([^|]*)</regex>
+  <order>sentinelone.file.hash_md5</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)filePath=([^|]*)</regex>
+  <order>sentinelone.file.path</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)fileName=([^|]*)</regex>
+  <order>sentinelone.file.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatID=([^|]*)</regex>
+  <order>sentinelone.threat.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatStoryline=([^|]*)</regex>
+  <order>sentinelone.threat.storyline</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatClassification=([^|]*)</regex>
+  <order>sentinelone.threat.classification</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatClassificationSource=([^|]*)</regex>
+  <order>sentinelone.threat.classification_source</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatClassifier=([^|]*)</regex>
+  <order>sentinelone.threat.classifier</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatConfidenceLevel=([^|]*)</regex>
+  <order>sentinelone.threat.confidence_level</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatDetectingEngine=([^|]*)</regex>
+  <order>sentinelone.threat.detecting_engine</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatMitigationStatus=([^|]*)</regex>
+  <order>sentinelone.threat.mitigation_status</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatMitigationStatusLabel=([^|]*)</regex>
+  <order>sentinelone.threat.mitigation_status_label</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatMitigationStatusID=([^|]*)</regex>
+  <order>sentinelone.threat.mitigation_status_id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatMitigatedPreemptively=([^|]*)</regex>
+  <order>sentinelone.threat.mitigated_preemptively</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatDetectionTime=([^|]*)</regex>
+  <order>sentinelone.threat.detection_time</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatIndicatorsList=([^|]*)</regex>
+  <order>sentinelone.threat.indicators</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatProcessUser=([^|]*)</regex>
+  <order>sentinelone.threat.process_user</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)threatCommandLineArguments=([^|]*)</regex>
+  <order>sentinelone.threat.command_line</order>
+</decoder>
+
+<!-- Notes, configuration changes, and Ranger discovery counters. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)noteText=([^|]*)</regex>
+  <order>sentinelone.note.text</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)oldValue=([^|]*)</regex>
+  <order>sentinelone.change.old_value</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)newValue=([^|]*)</regex>
+  <order>sentinelone.change.new_value</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)totalNewDevices=([^|]*)</regex>
+  <order>sentinelone.ranger.total_new_devices</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)secured=([^|]*)</regex>
+  <order>sentinelone.ranger.secured</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)unsecured=([^|]*)</regex>
+  <order>sentinelone.ranger.unsecured</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)unsupported=([^|]*)</regex>
+  <order>sentinelone.ranger.unsupported</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)unknown=([^|]*)</regex>
+  <order>sentinelone.ranger.unknown</order>
+</decoder>
+
+<!-- Network Discovery. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)gatewayIp=([^|]*)</regex>
+  <order>sentinelone.network.gateway_ip</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)gatewayMac=([^|]*)</regex>
+  <order>sentinelone.network.gateway_mac</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)gatewayVisibleIp=([^|]*)</regex>
+  <order>sentinelone.network.gateway_visible_ip</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)networkName=([^|]*)</regex>
+  <order>sentinelone.network.name</order>
+</decoder>
+
+<!-- Device Control. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlEventType=([^|]*)</regex>
+  <order>sentinelone.device_control.event_type</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlClass=([^|]*)</regex>
+  <order>sentinelone.device_control.class</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlVendor=([^|]*)</regex>
+  <order>sentinelone.device_control.vendor</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlProduct=([^|]*)</regex>
+  <order>sentinelone.device_control.product</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlSerial=([^|]*)</regex>
+  <order>sentinelone.device_control.serial</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlDeviceName=([^|]*)</regex>
+  <order>sentinelone.device_control.device_name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlRuleId=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlInterface=([^|]*)</regex>
+  <order>sentinelone.device_control.interface</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlBluetoothVersion=([^|]*)</regex>
+  <order>sentinelone.device_control.bluetooth_version</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlBluetoothMinorClass=([^|]*)</regex>
+  <order>sentinelone.device_control.bluetooth_minor_class</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointDeviceControlBluetoothProfileUuids=([^|]*)</regex>
+  <order>sentinelone.device_control.bluetooth_profile_uuids</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)bluetoothAddress=([^|]*)</regex>
+  <order>sentinelone.device_control.bluetooth_address</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleAccessPermission=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_access_permission</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleAction=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_action</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleDeviceClass=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_device_class</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleId=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleInterface=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_interface</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleName=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleProduct=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_product</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleSerial=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_serial</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleStatus=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_status</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleVendor=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_vendor</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleBluetoothVersion=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_bluetooth_version</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleBluetoothLmpVersion=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_bluetooth_lmp_version</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceRuleBluetoothMinorClass=([^|]*)</regex>
+  <order>sentinelone.device_control.rule_bluetooth_minor_class</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)ruleId=([^|]*)</regex>
+  <order>sentinelone.rule.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)ruleName=([^|]*)</regex>
+  <order>sentinelone.rule.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)gattServices=([^|]*)</regex>
+  <order>sentinelone.device_control.gatt_services</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)manufacturerName=([^|]*)</regex>
+  <order>sentinelone.device_control.manufacturer_name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceInformationServiceInfoKey=([^|]*)</regex>
+  <order>sentinelone.device_control.device_info_key</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)deviceInformationServiceInfoValue=([^|]*)</regex>
+  <order>sentinelone.device_control.device_info_value</order>
+</decoder>
+
+<!-- Firewall Control. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointFirewallRuleApplication=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_application</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointFirewallRuleDirection=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_direction</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointFirewallRuleLocalHost=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_local_host</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointFirewallRuleLocalPort=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_local_port</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointFirewallRuleProtocol=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_protocol</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointFirewallRuleRemoteHost=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_remote_host</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)endpointFirewallRuleRemotePort=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_remote_port</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationRuleId=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationRuleName=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationRuleAction=([^|]*)</regex>
+  <order>sentinelone.firewall.rule_action</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficProtocol=([^|]*)</regex>
+  <order>protocol</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficProtocol=([^|]*)</regex>
+  <order>sentinelone.firewall.traffic.protocol</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficLocalHost=([^|]*)</regex>
+  <order>sentinelone.firewall.traffic.local_host</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficLocalPort=([^|]*)</regex>
+  <order>srcport</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficLocalPort=([^|]*)</regex>
+  <order>sentinelone.firewall.traffic.local_port</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficRemoteHost=([^|]*)</regex>
+  <order>dstip</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficRemoteHost=([^|]*)</regex>
+  <order>sentinelone.firewall.traffic.remote_host</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficRemotePort=([^|]*)</regex>
+  <order>dstport</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficRemotePort=([^|]*)</regex>
+  <order>sentinelone.firewall.traffic.remote_port</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficPID=([^|]*)</regex>
+  <order>sentinelone.firewall.traffic.pid</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficProcessName=([^|]*)</regex>
+  <order>sentinelone.firewall.traffic.process_name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficNumberOfEvents=([^|]*)</regex>
+  <order>sentinelone.firewall.traffic.event_count</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firewallNotificationTrafficDurationOfMeasurement=([^|]*)</regex>
+  <order>sentinelone.firewall.traffic.duration_seconds</order>
+</decoder>
+
+<!-- Remote Shell. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)remoteShellSessionId=([^|]*)</regex>
+  <order>sentinelone.remote_shell.session_id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)remoteShellEventReason=([^|]*)</regex>
+  <order>sentinelone.remote_shell.reason</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)remoteShellEventDescription=([^|]*)</regex>
+  <order>sentinelone.remote_shell.description</order>
+</decoder>

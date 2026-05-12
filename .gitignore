@@ -1,0 +1,10 @@
+# Local SentinelOne reference material and copied examples.
+# Keep the public repository focused on the Wazuh ruleset itself.
+*.txt
+
+# Editor and OS files.
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
