@@ -322,8 +322,17 @@ keys on the stable SentinelOne marker:
 SentinelOne|Mgmt|
 ```
 
-Child decoders then extract the CEF header, numeric alert ID, `eventID`,
-`activityType`, and extension fields.
+The decoder file contains several explicit parent decoders for these observed
+Phase 2 shapes. Child decoders then extract the CEF header, numeric alert ID,
+`eventID`, `activityType`, and extension fields.
+
+When upgrading the decoder, replace the whole file instead of appending snippets
+to an older local decoder file:
+
+```sh
+sudo install -m 0640 decoders/0480-sentinelone_decoders.xml /var/ossec/etc/decoders/0480-sentinelone_decoders.xml
+sudo systemctl restart wazuh-manager
+```
 
 If Phase 2 still shows `No decoder matched`, confirm that the updated decoder
 file has actually been copied to `/var/ossec/etc/decoders/` and that there is no

@@ -8,8 +8,35 @@
   syslog ingestion should send each CEF event as one log message.
 -->
 
+<!-- Clean CEF payload, for example: CEF:2|SentinelOne|Mgmt|... -->
 <decoder name="sentinelone">
-  <prematch type="pcre2">.*SentinelOne\|Mgmt\|</prematch>
+  <prematch type="pcre2">^CEF:\x20*2\|SentinelOne\|Mgmt\|</prematch>
+</decoder>
+
+<!-- Wazuh may pre-decode "CEF" as program_name and leave: 2|SentinelOne|Mgmt|... -->
+<decoder name="sentinelone">
+  <program_name type="pcre2">^CEF$</program_name>
+  <prematch type="pcre2">^\x20*:?\x20*2\|SentinelOne\|Mgmt\|</prematch>
+</decoder>
+
+<!-- Remainder after malformed timestamp pre-decoding, for example: 28:40,701 sentinel - CEF:2|... -->
+<decoder name="sentinelone">
+  <prematch type="pcre2">^\x20*\d{2}:\d{2},\d+\x20+sentinel\x20*-\x20*CEF:\x20*2\|SentinelOne\|Mgmt\|</prematch>
+</decoder>
+
+<!-- Remainder when only the collector program prefix is left before CEF. -->
+<decoder name="sentinelone">
+  <prematch type="pcre2">^\x20*sentinel\x20*-\x20*CEF:\x20*2\|SentinelOne\|Mgmt\|</prematch>
+</decoder>
+
+<!-- Full forwarded syslog line with one or more timestamps/hostnames before CEF. -->
+<decoder name="sentinelone">
+  <prematch type="pcre2">^\d{4}-\d{2}-\d{2}T[^\x20]+\x20+.*CEF:\x20*2\|SentinelOne\|Mgmt\|</prematch>
+</decoder>
+
+<!-- Last-resort SentinelOne marker for unusual collectors. -->
+<decoder name="sentinelone">
+  <prematch type="pcre2">^.*SentinelOne\|Mgmt\|</prematch>
 </decoder>
 
 <decoder name="sentinelone">
