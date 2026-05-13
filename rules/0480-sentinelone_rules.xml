@@ -7,106 +7,106 @@
 
 <group name="sentinelone,">
 
-  <rule id="100500" level="0">
+  <rule id="119500" level="0">
     <decoded_as>sentinelone</decoded_as>
     <description>SentinelOne event decoded.</description>
   </rule>
 
-  <rule id="100501" level="3">
-    <if_sid>100500</if_sid>
+  <rule id="119501" level="3">
+    <if_sid>119500</if_sid>
     <description>SentinelOne event: $(sentinelone.event_desc)</description>
     <group>sentinelone_event,</group>
   </rule>
 
   <!-- Generic SentinelOne eventSeverity mapping. -->
-  <rule id="100510" level="4">
-    <if_sid>100500</if_sid>
+  <rule id="119510" level="4">
+    <if_sid>119500</if_sid>
     <field name="sentinelone.event_severity" type="pcre2">^(?:1|2|3)$</field>
     <description>SentinelOne low severity event: $(sentinelone.event_desc)</description>
     <group>sentinelone_severity_low,</group>
   </rule>
 
-  <rule id="100511" level="7">
-    <if_sid>100500</if_sid>
+  <rule id="119511" level="7">
+    <if_sid>119500</if_sid>
     <field name="sentinelone.event_severity" type="pcre2">^(?:4|5|6)$</field>
     <description>SentinelOne medium severity event: $(sentinelone.event_desc)</description>
     <group>sentinelone_severity_medium,</group>
   </rule>
 
-  <rule id="100512" level="10">
-    <if_sid>100500</if_sid>
+  <rule id="119512" level="10">
+    <if_sid>119500</if_sid>
     <field name="sentinelone.event_severity" type="pcre2">^(?:7|8)$</field>
     <description>SentinelOne high severity event: $(sentinelone.event_desc)</description>
     <group>sentinelone_severity_high,</group>
   </rule>
 
-  <rule id="100513" level="12">
-    <if_sid>100500</if_sid>
+  <rule id="119513" level="12">
+    <if_sid>119500</if_sid>
     <field name="sentinelone.event_severity" type="pcre2">^(?:9|10)$</field>
     <description>SentinelOne critical severity event: $(sentinelone.event_desc)</description>
     <group>sentinelone_severity_critical,</group>
   </rule>
 
   <!-- Threat detection and threat-management activity types. -->
-  <rule id="100520" level="14">
-    <if_sid>100500</if_sid>
+  <rule id="119520" level="14">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^19$</id>
     <description>SentinelOne malicious threat not mitigated on $(sentinelone.source.hostname): $(sentinelone.file.name)</description>
     <group>sentinelone_threat,sentinelone_malware,malware,</group>
   </rule>
 
-  <rule id="100521" level="10">
-    <if_sid>100500</if_sid>
+  <rule id="119521" level="10">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^4003$</id>
     <description>SentinelOne suspicious threat not mitigated on $(sentinelone.source.hostname): $(sentinelone.file.name)</description>
     <group>sentinelone_threat,sentinelone_suspicious,</group>
   </rule>
 
-  <rule id="100522" level="9">
-    <if_sid>100500</if_sid>
+  <rule id="119522" level="9">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:18|20)$</id>
     <description>SentinelOne threat mitigated or preemptively blocked on $(sentinelone.source.hostname): $(sentinelone.file.name)</description>
     <group>sentinelone_threat,sentinelone_malware,malware,</group>
   </rule>
 
-  <rule id="100523" level="12">
-    <if_sid>100500</if_sid>
+  <rule id="119523" level="12">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:2006|2007|2008|2009|2010)$</id>
     <description>SentinelOne threat mitigation failed on $(sentinelone.source.hostname): $(sentinelone.event_desc)</description>
     <group>sentinelone_threat,sentinelone_mitigation_failed,malware,</group>
   </rule>
 
-  <rule id="100524" level="6">
-    <if_sid>100500</if_sid>
+  <rule id="119524" level="6">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:2001|2002|2003|2004|2005)$</id>
     <description>SentinelOne threat mitigation succeeded on $(sentinelone.source.hostname): $(sentinelone.event_desc)</description>
     <group>sentinelone_threat,sentinelone_mitigation_success,malware,</group>
   </rule>
 
-  <rule id="100525" level="9">
-    <if_sid>100500</if_sid>
+  <rule id="119525" level="9">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:29|34|4001|4008|4009|4011)$</id>
     <description>SentinelOne threat status requires review on $(sentinelone.source.hostname): $(sentinelone.event_desc)</description>
     <group>sentinelone_threat,sentinelone_threat_management,</group>
   </rule>
 
-  <rule id="100526" level="5">
-    <if_sid>100500</if_sid>
+  <rule id="119526" level="5">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:21|28|4002)$</id>
     <description>SentinelOne threat resolved on $(sentinelone.source.hostname): $(sentinelone.event_desc)</description>
     <group>sentinelone_threat,sentinelone_threat_resolved,</group>
   </rule>
 
-  <rule id="100527" level="12">
-    <if_sid>100500</if_sid>
+  <rule id="119527" level="12">
+    <if_sid>119500</if_sid>
     <field name="sentinelone.threat.confidence_level" type="pcre2">(?i)^malicious$</field>
     <field name="sentinelone.threat.mitigation_status" type="pcre2">(?i)^(?:not_mitigated|not mitigated)$</field>
     <description>SentinelOne malicious threat is not mitigated on $(sentinelone.source.hostname): $(sentinelone.file.name)</description>
     <group>sentinelone_threat,sentinelone_malware,malware,</group>
   </rule>
 
-  <rule id="100528" level="9">
-    <if_sid>100500</if_sid>
+  <rule id="119528" level="9">
+    <if_sid>119500</if_sid>
     <field name="sentinelone.threat.confidence_level" type="pcre2">(?i)^suspicious$</field>
     <field name="sentinelone.threat.mitigation_status" type="pcre2">(?i)^(?:not_mitigated|not mitigated)$</field>
     <description>SentinelOne suspicious threat is not mitigated on $(sentinelone.source.hostname): $(sentinelone.file.name)</description>
@@ -114,107 +114,107 @@
   </rule>
 
   <!-- Device Control, Firewall Control, and Remote Shell. -->
-  <rule id="100530" level="8">
-    <if_sid>100500</if_sid>
+  <rule id="119530" level="8">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^5125$</id>
     <description>SentinelOne Device Control blocked device on $(sentinelone.source.hostname): $(sentinelone.device_control.device_name)</description>
     <group>sentinelone_device_control,policy_violation,</group>
   </rule>
 
-  <rule id="100531" level="8">
-    <if_sid>100500</if_sid>
+  <rule id="119531" level="8">
+    <if_sid>119500</if_sid>
     <field name="sentinelone.device_control.event_type" type="pcre2">(?i)^(?:blocked|configured-read-only)$</field>
     <description>SentinelOne Device Control restricted device on $(sentinelone.source.hostname): $(sentinelone.device_control.device_name)</description>
     <group>sentinelone_device_control,policy_violation,</group>
   </rule>
 
-  <rule id="100532" level="5">
-    <if_sid>100500</if_sid>
+  <rule id="119532" level="5">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^5126$</id>
     <description>SentinelOne Device Control approved or connected device on $(sentinelone.source.hostname): $(sentinelone.device_control.device_name)</description>
     <group>sentinelone_device_control,</group>
   </rule>
 
-  <rule id="100533" level="8">
-    <if_sid>100500</if_sid>
+  <rule id="119533" level="8">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^5232$</id>
     <description>SentinelOne Firewall Control blocked traffic on $(sentinelone.source.hostname): $(sentinelone.firewall.rule_name)</description>
     <group>sentinelone_firewall,firewall,</group>
   </rule>
 
-  <rule id="100540" level="10">
-    <if_sid>100500</if_sid>
+  <rule id="119540" level="10">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:3200|3201)$</id>
     <description>SentinelOne remote shell started on $(sentinelone.source.hostname)</description>
     <group>sentinelone_remote_shell,</group>
   </rule>
 
-  <rule id="100541" level="6">
-    <if_sid>100500</if_sid>
+  <rule id="119541" level="6">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:3202|3203|3204|3400)$</id>
     <description>SentinelOne remote shell event on $(sentinelone.source.hostname): $(sentinelone.remote_shell.reason)</description>
     <group>sentinelone_remote_shell,</group>
   </rule>
 
   <!-- Agent lifecycle, administrative, allow/block list, Ranger, and incident activity. -->
-  <rule id="100550" level="6">
-    <if_sid>100500</if_sid>
+  <rule id="119550" level="6">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:47|49|51|52|53|54|55|61|62|63|64|65|66|74|80|81|89|90|91|92|120|159)$</id>
     <description>SentinelOne endpoint lifecycle or agent action on $(sentinelone.source.hostname): $(sentinelone.event_desc)</description>
     <group>sentinelone_agent,</group>
   </rule>
 
-  <rule id="100551" level="4">
-    <if_sid>100500</if_sid>
+  <rule id="119551" level="4">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:17|43|48)$</id>
     <description>SentinelOne endpoint inventory or update event on $(sentinelone.source.hostname): $(sentinelone.event_desc)</description>
     <group>sentinelone_agent,</group>
   </rule>
 
-  <rule id="100560" level="7">
-    <if_sid>100500</if_sid>
+  <rule id="119560" level="7">
+    <if_sid>119500</if_sid>
     <field name="sentinelone.category" type="pcre2">(?i)^(?:ADMINISTRATIVE|WHITELISTBLACKLIST)$</field>
     <description>SentinelOne administrative or allow/block list change by $(sentinelone.user.name): $(sentinelone.event_desc)</description>
     <group>sentinelone_admin,sentinelone_configuration,</group>
   </rule>
 
-  <rule id="100561" level="8">
-    <if_sid>100500</if_sid>
+  <rule id="119561" level="8">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:3006|3007|3008|3009|3010|3011)$</id>
     <description>SentinelOne allow/block list changed by $(sentinelone.user.name): $(sentinelone.event_desc)</description>
     <group>sentinelone_admin,sentinelone_allow_block_list,</group>
   </rule>
 
-  <rule id="100562" level="7">
-    <if_sid>100500</if_sid>
+  <rule id="119562" level="7">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:305|306|4004|4005)$</id>
     <description>SentinelOne protection policy changed: $(sentinelone.event_desc)</description>
     <group>sentinelone_admin,sentinelone_policy,</group>
   </rule>
 
-  <rule id="100570" level="5">
-    <if_sid>100500</if_sid>
+  <rule id="119570" level="5">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^3505$</id>
     <description>SentinelOne Ranger discovered $(sentinelone.ranger.total_new_devices) new devices; unsecured: $(sentinelone.ranger.unsecured)</description>
     <group>sentinelone_ranger,network_discovery,</group>
   </rule>
 
-  <rule id="100580" level="9">
-    <if_sid>100500</if_sid>
+  <rule id="119580" level="9">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:22000|22003|22006|22051|22053|22071)$</id>
     <description>SentinelOne incident activity: $(sentinelone.event_desc)</description>
     <group>sentinelone_incident,</group>
   </rule>
 
-  <rule id="100581" level="6">
-    <if_sid>100500</if_sid>
+  <rule id="119581" level="6">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:22001|22002|22004|22005|22052|22054|22072|22073)$</id>
     <description>SentinelOne incident update: $(sentinelone.event_desc)</description>
     <group>sentinelone_incident,</group>
   </rule>
 
-  <rule id="100590" level="7">
-    <if_sid>100500</if_sid>
+  <rule id="119590" level="7">
+    <if_sid>119500</if_sid>
     <id type="pcre2">^(?:18000|18001|18002)$</id>
     <description>SentinelOne scheduled report changed: $(sentinelone.event_desc)</description>
     <group>sentinelone_reports,</group>

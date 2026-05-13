@@ -35,7 +35,7 @@ each field is decoded independently when present.
 `rules/0480-sentinelone_rules.xml` provides a base SentinelOne rule and alerting
 rules for common SentinelOne security and operations events.
 
-Rules are grouped under `sentinelone` and use local rule IDs in the `100500`
+Rules are grouped under `sentinelone` and use local rule IDs in the `119500`
 range.
 
 ## Supported Log Format
@@ -97,17 +97,17 @@ The ruleset contains:
 
 | Rule ID | Level | Purpose |
 | --- | ---: | --- |
-| `100500` | 0 | Base decoded SentinelOne event |
-| `100501` | 3 | Generic SentinelOne event |
-| `100510`-`100513` | 4-12 | Generic mapping from SentinelOne `eventSeverity` |
-| `100520`-`100528` | 5-14 | Threat detection, threat status, and mitigation outcomes |
-| `100530`-`100533` | 5-8 | Device Control and Firewall Control |
-| `100540`-`100541` | 6-10 | Remote Shell events |
-| `100550`-`100551` | 4-6 | Endpoint lifecycle and agent operations |
-| `100560`-`100562` | 7-8 | Administrative, allow/block list, and policy changes |
-| `100570` | 5 | Ranger discovery |
-| `100580`-`100581` | 6-9 | Incident activity and incident updates |
-| `100590` | 7 | Scheduled report changes |
+| `119500` | 0 | Base decoded SentinelOne event |
+| `119501` | 3 | Generic SentinelOne event |
+| `119510`-`119513` | 4-12 | Generic mapping from SentinelOne `eventSeverity` |
+| `119520`-`119528` | 5-14 | Threat detection, threat status, and mitigation outcomes |
+| `119530`-`119533` | 5-8 | Device Control and Firewall Control |
+| `119540`-`119541` | 6-10 | Remote Shell events |
+| `119550`-`119551` | 4-6 | Endpoint lifecycle and agent operations |
+| `119560`-`119562` | 7-8 | Administrative, allow/block list, and policy changes |
+| `119570` | 5 | Ranger discovery |
+| `119580`-`119581` | 6-9 | Incident activity and incident updates |
+| `119590` | 7 | Scheduled report changes |
 
 Event-code based rules match Wazuh `id`, which is decoded from either
 SentinelOne `activityType` or `eventID`. This keeps the same rules working
@@ -332,15 +332,22 @@ XML syntax errors and duplicate rule IDs are common causes.
 Warnings like this mean the ruleset is installed more than once:
 
 ```text
-WARNING: (7612): Rule ID '100500' is duplicated. Only the first occurrence will be considered.
+WARNING: (7612): Rule ID '119500' is duplicated. Only the first occurrence will be considered.
 ```
 
 Remove the duplicate copy and keep only one SentinelOne rule file. Common places
 to check are:
 
 ```sh
-sudo grep -R "id=\"100500\"" /var/ossec/etc/rules /var/ossec/ruleset/rules 2>/dev/null
+sudo grep -R "id=\"119500\"" /var/ossec/etc/rules /var/ossec/ruleset/rules 2>/dev/null
 sudo grep -R "SentinelOne CEF2 syslog rules" /var/ossec/etc/rules /var/ossec/ruleset/rules 2>/dev/null
+```
+
+If you are upgrading from an older version of this repository, also remove any
+previous copy that used the old `100500` rule range:
+
+```sh
+sudo grep -R "id=\"100500\"" /var/ossec/etc/rules /var/ossec/ruleset/rules 2>/dev/null
 ```
 
 Usually the correct cleanup is to keep:
