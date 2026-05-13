@@ -9,19 +9,31 @@
 -->
 
 <decoder name="sentinelone">
-  <prematch type="pcre2">(?:[0-9:,\x20]+)?(?:sentinel\x20*-\x20*)?CEF:2\|SentinelOne\|Mgmt\|</prematch>
+  <prematch type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|Mgmt\|</prematch>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">(?:[0-9:,\x20]+)?(?:sentinel\x20*-\x20*)?CEF:2\|SentinelOne\|([^|]*)\|</regex>
+  <regex type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|([^|]*)\|</regex>
   <order>sentinelone.cef_product</order>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">(?:[0-9:,\x20]+)?(?:sentinel\x20*-\x20*)?CEF:2\|SentinelOne\|Mgmt\|([^|=]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
+  <regex type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|Mgmt\|([A-Za-z][^|=]*)\|[A-Za-z][A-Za-z0-9]*=</regex>
   <order>sentinelone.os</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|Mgmt\|([0-9]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
+  <order>id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|Mgmt\|([0-9]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
+  <order>sentinelone.cef_event_id</order>
 </decoder>
 
 <decoder name="sentinelone">
@@ -75,6 +87,12 @@
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)severity=([^|]*)</regex>
+  <order>sentinelone.alert.severity</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)cat=([^|]*)</regex>
   <order>sentinelone.category</order>
 </decoder>
@@ -93,8 +111,99 @@
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)product=([^|]*)</regex>
+  <order>sentinelone.product</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)value=([^|]*)</regex>
   <order>sentinelone.value</order>
+</decoder>
+
+<!-- Alert schema fields. -->
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)alertId=([^|]*)</regex>
+  <order>sentinelone.alert.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)alertName=([^|]*)</regex>
+  <order>sentinelone.event_desc</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)alertName=([^|]*)</regex>
+  <order>sentinelone.alert.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)description=([^|]*)</regex>
+  <order>sentinelone.alert.description</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)detectionEngine=([^|]*)</regex>
+  <order>sentinelone.threat.detecting_engine</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)detectedAt=([^|]*)</regex>
+  <order>sentinelone.threat.detection_time</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)detectedAt=([^|]*)</regex>
+  <order>sentinelone.alert.detected_at</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)firstSeenAt=([^|]*)</regex>
+  <order>sentinelone.alert.first_seen_at</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)classification=([^|]*)</regex>
+  <order>sentinelone.threat.classification</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)confidenceLevel=([^|]*)</regex>
+  <order>sentinelone.threat.confidence_level</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)status=([^|]*)</regex>
+  <order>sentinelone.alert.status</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)analystVerdict=([^|]*)</regex>
+  <order>sentinelone.alert.analyst_verdict</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)mitigationStatus=([^|]*)</regex>
+  <order>sentinelone.threat.mitigation_status</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)alertDetailUrl=([^|]*)</regex>
+  <order>sentinelone.alert.detail_url</order>
 </decoder>
 
 <!-- Tenant, scope, and management-console context. -->
@@ -179,6 +288,18 @@
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)assetLastLoggedInUser=([^|]*)</regex>
+  <order>user</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)assetLastLoggedInUser=([^|]*)</regex>
+  <order>sentinelone.source.user.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)sourceUserId=([^|]*)</regex>
   <order>sentinelone.source.user.id</order>
 </decoder>
@@ -222,6 +343,18 @@
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)assetExternalIp=\s*([^|]*)</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)assetExternalIp=\s*([^|]*)</regex>
+  <order>sentinelone.source.ip</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)sourceMgmtPrecievedAddress=\s*([^|]*)</regex>
   <order>sentinelone.source.management_address</order>
 </decoder>
@@ -258,8 +391,26 @@
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)assetName=\s*([^|]*)</regex>
+  <order>system_name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)sourceHostName=\s*([^|]*)</regex>
   <order>sentinelone.source.hostname</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)assetName=\s*([^|]*)</regex>
+  <order>sentinelone.source.hostname</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)assetCategory=([^|]*)</regex>
+  <order>sentinelone.source.asset_category</order>
 </decoder>
 
 <decoder name="sentinelone">
@@ -360,7 +511,19 @@
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)groupId=([^|]*)</regex>
+  <order>sentinelone.source.group.id</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)sourceGroupName=([^|]*)</regex>
+  <order>sentinelone.source.group.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)groupName=([^|]*)</regex>
   <order>sentinelone.source.group.name</order>
 </decoder>
 
@@ -385,6 +548,12 @@
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)fileSha256=([^|]*)</regex>
+  <order>sentinelone.file.hash_sha256</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)fileHashMd5=([^|]*)</regex>
   <order>sentinelone.file.hash_md5</order>
 </decoder>
@@ -403,6 +572,18 @@
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)fileProcessName=([^|]*)</regex>
+  <order>sentinelone.file.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)originatingProcessName=([^|]*)</regex>
+  <order>sentinelone.process.originating.name</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)threatID=([^|]*)</regex>
   <order>sentinelone.threat.id</order>
 </decoder>
@@ -410,6 +591,12 @@
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)threatStoryline=([^|]*)</regex>
+  <order>sentinelone.threat.storyline</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)storylineId=([^|]*)</regex>
   <order>sentinelone.threat.storyline</order>
 </decoder>
 

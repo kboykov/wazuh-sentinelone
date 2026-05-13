@@ -47,6 +47,35 @@
     <group>sentinelone_severity_critical,</group>
   </rule>
 
+  <!-- Text severity mapping used by SentinelOne EDR alert syslog events. -->
+  <rule id="119514" level="5">
+    <if_sid>119500</if_sid>
+    <field name="sentinelone.alert.severity" type="pcre2">(?i)^LOW$</field>
+    <description>SentinelOne low severity alert: $(sentinelone.event_desc)</description>
+    <group>sentinelone_alert,sentinelone_severity_low,</group>
+  </rule>
+
+  <rule id="119515" level="8">
+    <if_sid>119500</if_sid>
+    <field name="sentinelone.alert.severity" type="pcre2">(?i)^MEDIUM$</field>
+    <description>SentinelOne medium severity alert: $(sentinelone.event_desc)</description>
+    <group>sentinelone_alert,sentinelone_severity_medium,</group>
+  </rule>
+
+  <rule id="119516" level="10">
+    <if_sid>119500</if_sid>
+    <field name="sentinelone.alert.severity" type="pcre2">(?i)^HIGH$</field>
+    <description>SentinelOne high severity alert: $(sentinelone.event_desc)</description>
+    <group>sentinelone_alert,sentinelone_severity_high,</group>
+  </rule>
+
+  <rule id="119517" level="12">
+    <if_sid>119500</if_sid>
+    <field name="sentinelone.alert.severity" type="pcre2">(?i)^CRITICAL$</field>
+    <description>SentinelOne critical severity alert: $(sentinelone.event_desc)</description>
+    <group>sentinelone_alert,sentinelone_severity_critical,</group>
+  </rule>
+
   <!-- Threat detection and threat-management activity types. -->
   <rule id="119520" level="14">
     <if_sid>119500</if_sid>
@@ -100,7 +129,7 @@
   <rule id="119527" level="12">
     <if_sid>119500</if_sid>
     <field name="sentinelone.threat.confidence_level" type="pcre2">(?i)^malicious$</field>
-    <field name="sentinelone.threat.mitigation_status" type="pcre2">(?i)^(?:not_mitigated|not mitigated)$</field>
+    <field name="sentinelone.threat.mitigation_status" type="pcre2">(?i)^(?:not_mitigated|not mitigated|unmitigated)$</field>
     <description>SentinelOne malicious threat is not mitigated on $(sentinelone.source.hostname): $(sentinelone.file.name)</description>
     <group>sentinelone_threat,sentinelone_malware,malware,</group>
   </rule>
@@ -108,9 +137,16 @@
   <rule id="119528" level="9">
     <if_sid>119500</if_sid>
     <field name="sentinelone.threat.confidence_level" type="pcre2">(?i)^suspicious$</field>
-    <field name="sentinelone.threat.mitigation_status" type="pcre2">(?i)^(?:not_mitigated|not mitigated)$</field>
+    <field name="sentinelone.threat.mitigation_status" type="pcre2">(?i)^(?:not_mitigated|not mitigated|unmitigated)$</field>
     <description>SentinelOne suspicious threat is not mitigated on $(sentinelone.source.hostname): $(sentinelone.file.name)</description>
     <group>sentinelone_threat,sentinelone_suspicious,</group>
+  </rule>
+
+  <rule id="119529" level="8">
+    <if_sid>119500</if_sid>
+    <id type="pcre2">^16000$</id>
+    <description>SentinelOne EDR alert on $(sentinelone.source.hostname): $(sentinelone.event_desc)</description>
+    <group>sentinelone_alert,sentinelone_threat,</group>
   </rule>
 
   <!-- Device Control, Firewall Control, and Remote Shell. -->

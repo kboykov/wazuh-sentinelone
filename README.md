@@ -3,10 +3,10 @@
 Custom Wazuh decoders and rules for SentinelOne CEF2 syslog events.
 
 This project helps Wazuh parse SentinelOne Singularity syslog notifications into
-searchable fields, then classify high-value SentinelOne activity such as malware
-detections, mitigation results, endpoint lifecycle changes, Device Control,
-Firewall Control, Remote Shell, Ranger discovery, administrative changes, and
-incident updates.
+searchable fields, then classify high-value SentinelOne activity such as EDR
+alerts, malware detections, mitigation results, endpoint lifecycle changes,
+Device Control, Firewall Control, Remote Shell, Ranger discovery,
+administrative changes, and incident updates.
 
 ## What This Repository Contains
 
@@ -49,13 +49,23 @@ The ruleset targets SentinelOne CEF2 syslog messages similar to:
 SentinelOne documentation notes that newer platform versions use `activityType`
 while older versions use `eventID`. This ruleset supports both.
 
+Some SentinelOne deployments also send an EDR alert schema where the CEF header
+contains a numeric alert type before the key/value extension fields:
+
+```text
+2026-05-13T13:29:32.413940+00:00 host.example CEF: 2|SentinelOne|Mgmt|16000|alertId=...|alertName=Freelens.exe - Preload Injection detected|severity=MEDIUM|confidenceLevel=SUSPICIOUS|mitigationStatus=UNMITIGATED|assetName=HOST01|fileSha256=...
+```
+
+For that schema, the decoder maps the numeric CEF header value, such as `16000`,
+into Wazuh `id`.
+
 ## Decoded Fields
 
 The decoder maps important values into Wazuh static fields where useful:
 
 | Wazuh field | Source |
 | --- | --- |
-| `id` | `activityType` or `eventID` |
+| `id` | `activityType`, `eventID`, or numeric SentinelOne CEF header ID |
 | `srcip` | `ip` |
 | `dstip` | `firewallNotificationTrafficRemoteHost` |
 | `srcport` | `firewallNotificationTrafficLocalPort` |
@@ -72,6 +82,7 @@ Important field families include:
 | --- | --- |
 | `sentinelone.event_*` | Legacy event ID, description, severity |
 | `sentinelone.activity_*` | Newer activity ID and activity type |
+| `sentinelone.alert.*` | EDR alert ID, name, description, severity, status, verdict, URL |
 | `sentinelone.account.*` | SentinelOne account context |
 | `sentinelone.site.*` | SentinelOne site context |
 | `sentinelone.device.*` | SentinelOne management console host fields |
@@ -79,6 +90,7 @@ Important field families include:
 | `sentinelone.source.*` | Endpoint identity, user, OS, network, group, agent metadata |
 | `sentinelone.file.*` | File name, path, SHA1, SHA256, MD5 |
 | `sentinelone.threat.*` | Threat ID, classification, confidence, mitigation, storyline |
+| `sentinelone.process.*` | Originating process details from alert events |
 | `sentinelone.change.*` | Old and new configuration values |
 | `sentinelone.ranger.*` | Ranger discovery counters |
 | `sentinelone.network.*` | Network discovery gateway and network names |
@@ -89,7 +101,10 @@ Important field families include:
 
 The decoder also handles documented SentinelOne aliases and variants such as
 `siteID`, `sourceAgentUUID`, `sourceAddress`, `sourceAddressNN`,
-`sourceMacAddress`, and `sourceMacAddressNN`.
+`sourceMacAddress`, and `sourceMacAddressNN`. It also normalizes newer EDR alert
+schema fields such as `alertName`, `confidenceLevel`, `mitigationStatus`,
+`fileSha256`, `assetName`, and `assetLastLoggedInUser` into the same dynamic
+field families used by the activity schema.
 
 ## Rule Behavior
 
@@ -100,7 +115,9 @@ The ruleset contains:
 | `119500` | 0 | Base decoded SentinelOne event |
 | `119501` | 3 | Generic SentinelOne event |
 | `119510`-`119513` | 4-12 | Generic mapping from SentinelOne `eventSeverity` |
+| `119514`-`119517` | 5-12 | Generic mapping from EDR alert text `severity` |
 | `119520`-`119528` | 5-14 | Threat detection, threat status, and mitigation outcomes |
+| `119529` | 8 | SentinelOne EDR alert schema, including CEF header ID `16000` |
 | `119530`-`119533` | 5-8 | Device Control and Firewall Control |
 | `119540`-`119541` | 6-10 | Remote Shell events |
 | `119550`-`119551` | 4-6 | Endpoint lifecycle and agent operations |
