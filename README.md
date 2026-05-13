@@ -306,9 +306,16 @@ program wrapper before the CEF payload, for example:
 2026-05-13T13:31:22.067963+00:00 2026-05-13 13: 31:22,047   sentinel -  CEF:2|SentinelOne|Mgmt|...
 ```
 
-The decoder parent is written to tolerate the common Wazuh pre-decoding
-remainder from that format, including `sentinel - CEF:2...` and malformed
-timestamp fragments such as `: 31:22,047 sentinel - CEF:2...`.
+Other collectors may produce:
+
+```text
+2026-05-13T13:29:32.413940+00:00 host.example CEF: 2|SentinelOne|Mgmt|16000|...
+```
+
+In that format Wazuh may pre-decode `program_name` as `CEF`, leaving the decoder
+to match a remainder that starts with `2|SentinelOne|Mgmt|...`. The decoder
+parent is written to tolerate both full CEF payloads and these common
+pre-decoding remainders.
 
 If Phase 2 still shows `No decoder matched`, confirm that the updated decoder
 file has actually been copied to `/var/ossec/etc/decoders/` and that there is no

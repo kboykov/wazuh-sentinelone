@@ -9,30 +9,30 @@
 -->
 
 <decoder name="sentinelone">
-  <prematch type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|Mgmt\|</prematch>
+  <prematch type="pcre2">(?:[^|]*\x20)?(?:CEF)?\x20*:?\x20*2\|SentinelOne\|Mgmt\|</prematch>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|([^|]*)\|</regex>
+  <regex type="pcre2">(?:[^|]*\x20)?(?:CEF)?\x20*:?\x20*2\|SentinelOne\|([^|]*)\|</regex>
   <order>sentinelone.cef_product</order>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|Mgmt\|([A-Za-z][^|=]*)\|[A-Za-z][A-Za-z0-9]*=</regex>
+  <regex type="pcre2">(?:[^|]*\x20)?(?:CEF)?\x20*:?\x20*2\|SentinelOne\|Mgmt\|([A-Za-z][^|=]*)\|[A-Za-z][A-Za-z0-9]*=</regex>
   <order>sentinelone.os</order>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|Mgmt\|([0-9]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
+  <regex type="pcre2">(?:[^|]*\x20)?(?:CEF)?\x20*:?\x20*2\|SentinelOne\|Mgmt\|([0-9]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
   <order>id</order>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">(?:[^|]*\x20)?CEF:\x20*2\|SentinelOne\|Mgmt\|([0-9]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
+  <regex type="pcre2">(?:[^|]*\x20)?(?:CEF)?\x20*:?\x20*2\|SentinelOne\|Mgmt\|([0-9]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
   <order>sentinelone.cef_event_id</order>
 </decoder>
 
