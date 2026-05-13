@@ -282,8 +282,27 @@ Check that the raw log contains:
 CEF:2|SentinelOne|Mgmt|
 ```
 
-If your SentinelOne syslog header differs, adjust the decoder prematch in
-`decoders/0480-sentinelone_decoders.xml`.
+Some syslog collectors forward SentinelOne messages with an extra timestamp and
+program wrapper before the CEF payload, for example:
+
+```text
+2026-05-13T13:31:22.067963+00:00 2026-05-13 13: 31:22,047   sentinel -  CEF:2|SentinelOne|Mgmt|...
+```
+
+The decoder parent is written to tolerate the common Wazuh pre-decoding
+remainder from that format, including `sentinel - CEF:2...` and malformed
+timestamp fragments such as `: 31:22,047 sentinel - CEF:2...`.
+
+If Phase 2 still shows `No decoder matched`, confirm that the updated decoder
+file has actually been copied to `/var/ossec/etc/decoders/` and that there is no
+older SentinelOne decoder file with the same decoder name still installed.
+
+Useful checks on the Wazuh manager:
+
+```sh
+sudo grep -R "CEF:2.*SentinelOne" /var/ossec/etc/decoders /var/ossec/ruleset/decoders 2>/dev/null
+sudo grep -R "decoder name=\"sentinelone\"" /var/ossec/etc/decoders /var/ossec/ruleset/decoders 2>/dev/null
+```
 
 ### A field is missing
 
@@ -308,6 +327,31 @@ sudo tail -n 100 /var/ossec/logs/ossec.log
 
 XML syntax errors and duplicate rule IDs are common causes.
 
+### Duplicate rule ID warnings
+
+Warnings like this mean the ruleset is installed more than once:
+
+```text
+WARNING: (7612): Rule ID '100500' is duplicated. Only the first occurrence will be considered.
+```
+
+Remove the duplicate copy and keep only one SentinelOne rule file. Common places
+to check are:
+
+```sh
+sudo grep -R "id=\"100500\"" /var/ossec/etc/rules /var/ossec/ruleset/rules 2>/dev/null
+sudo grep -R "SentinelOne CEF2 syslog rules" /var/ossec/etc/rules /var/ossec/ruleset/rules 2>/dev/null
+```
+
+Usually the correct cleanup is to keep:
+
+```text
+/var/ossec/etc/rules/0480-sentinelone_rules.xml
+```
+
+and remove any older copied version from `local_rules.xml` or another custom
+rules file. Restart the manager after cleanup.
+
 ## Contributing
 
 When adding new SentinelOne coverage:
@@ -319,4 +363,3 @@ When adding new SentinelOne coverage:
 4. Add focused rules for high-value behavior.
 5. Test with `wazuh-logtest` using single-line events.
 6. Avoid committing real customer data, tokens, or proprietary documentation.
-

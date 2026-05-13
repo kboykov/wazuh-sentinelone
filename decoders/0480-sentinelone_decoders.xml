@@ -9,18 +9,18 @@
 -->
 
 <decoder name="sentinelone">
-  <prematch type="pcre2">.*CEF:\s*2\s*\|\s*SentinelOne\s*\|\s*Mgmt\s*\|</prematch>
+  <prematch type="pcre2">(?:[0-9:,\x20]+)?(?:sentinel\x20*-\x20*)?CEF:2\|SentinelOne\|Mgmt\|</prematch>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">.*CEF:\s*2\s*\|\s*SentinelOne\s*\|\s*([^|]*)\|</regex>
+  <regex type="pcre2">(?:[0-9:,\x20]+)?(?:sentinel\x20*-\x20*)?CEF:2\|SentinelOne\|([^|]*)\|</regex>
   <order>sentinelone.cef_product</order>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">.*CEF:\s*2\s*\|\s*SentinelOne\s*\|\s*Mgmt\s*\|\s*([^|=]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
+  <regex type="pcre2">(?:[0-9:,\x20]+)?(?:sentinel\x20*-\x20*)?CEF:2\|SentinelOne\|Mgmt\|([^|=]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
   <order>sentinelone.os</order>
 </decoder>
 
