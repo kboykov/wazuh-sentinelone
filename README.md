@@ -313,9 +313,17 @@ Other collectors may produce:
 ```
 
 In that format Wazuh may pre-decode `program_name` as `CEF`, leaving the decoder
-to match a remainder that starts with `2|SentinelOne|Mgmt|...`. The decoder
-parent is written to tolerate both full CEF payloads and these common
-pre-decoding remainders.
+to match a remainder that starts with `2|SentinelOne|Mgmt|...`. Because `CEF`
+can appear in the remaining Phase 2 message, be removed into `program_name`, or
+be hidden behind malformed timestamp fragments, the parent decoder intentionally
+keys on the stable SentinelOne marker:
+
+```text
+SentinelOne|Mgmt|
+```
+
+Child decoders then extract the CEF header, numeric alert ID, `eventID`,
+`activityType`, and extension fields.
 
 If Phase 2 still shows `No decoder matched`, confirm that the updated decoder
 file has actually been copied to `/var/ossec/etc/decoders/` and that there is no
