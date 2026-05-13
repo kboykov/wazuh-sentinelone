@@ -9,19 +9,25 @@
 -->
 
 <decoder name="sentinelone">
-  <prematch type="pcre2">CEF:2\|SentinelOne\|Mgmt\|</prematch>
+  <prematch type="pcre2">.*CEF:\s*2\s*\|\s*SentinelOne\s*\|\s*Mgmt\s*\|</prematch>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">CEF:2\|SentinelOne\|([^|]*)\|</regex>
+  <regex type="pcre2">.*CEF:\s*2\s*\|\s*SentinelOne\s*\|\s*([^|]*)\|</regex>
   <order>sentinelone.cef_product</order>
 </decoder>
 
 <decoder name="sentinelone">
   <parent>sentinelone</parent>
-  <regex type="pcre2">CEF:2\|SentinelOne\|Mgmt\|([^|=]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
+  <regex type="pcre2">.*CEF:\s*2\s*\|\s*SentinelOne\s*\|\s*Mgmt\s*\|\s*([^|=]+)\|[A-Za-z][A-Za-z0-9]*=</regex>
   <order>sentinelone.os</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)osName=([^|]*)</regex>
+  <order>sentinelone.os_name</order>
 </decoder>
 
 <!-- Core SentinelOne activity identifiers. activityType replaces eventID in newer platforms. -->
@@ -83,6 +89,12 @@
   <parent>sentinelone</parent>
   <regex type="pcre2">(?:^|\|)vendor=([^|]*)</regex>
   <order>sentinelone.vendor</order>
+</decoder>
+
+<decoder name="sentinelone">
+  <parent>sentinelone</parent>
+  <regex type="pcre2">(?:^|\|)value=([^|]*)</regex>
+  <order>sentinelone.value</order>
 </decoder>
 
 <!-- Tenant, scope, and management-console context. -->
